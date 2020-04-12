@@ -25,49 +25,61 @@ class phf:
         level - how deep down the tree you want the search to go (range is 3)
         '''
         
+        # for option level==0
         if level == 0:
+            
+            # return the same word
             return root_word
         
+        #####################################################################################################
         
-        if level == 1:
-            # get synonyms of root_word
+        # for option level==1, get unique closest synonyms of root_word
+        
+        elif level == 1:
             level_1 = []
             for syn in wn.synsets(root_word): 
                 for le in syn.lemmas(): 
                     level_1.append(le.name()) 
+            
+            # return unique words for level 1
             return set(level_1)
-                
-        if level == 2:
-            # get synonyms of root_word
+        
+        #####################################################################################################
+        
+        # for option level==2, get unique synonyms of all words in level_1
+        elif level == 2:
+            
             level_1 = []
             for syn in wn.synsets(root_word): 
                 for le in syn.lemmas(): 
                     level_1.append(le.name()) 
 
-            # get all related words of synonyms in level_1
+            
             level_2 = []
             for l1 in set(level_1):
                 for syn in wn.synsets(l1): 
                     for le in syn.lemmas(): 
                         level_2.append(le.name())
+            
+            # return unique words for level 2           
             return set(level_2)
         
+        #####################################################################################################
         
-        if level == 3:                 
-            # get synonyms of root_word
+        # for option level==3, get unique synonyms of all words in level_2 including nouns, verbs, etc
+        elif level == 3:                 
+            
             level_1 = []
             for syn in wn.synsets(root_word): 
                 for le in syn.lemmas(): 
                     level_1.append(le.name()) 
 
-            # get all related words of synonyms in level_1
             level_2 = []
             for l1 in set(level_1):
                 for syn in wn.synsets(l1): 
                     for le in syn.lemmas(): 
                         level_2.append(le.name())
 
-            # get all related words level_2 (include nouns, verbs, etc)
             level_3a = []
             for l2 in level_2:
                 for syn in wn.synsets(l2):
